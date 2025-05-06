@@ -11,7 +11,9 @@ public class Main {
         System.out.println(isPerfectNumber(5));   // false
         System.out.println(isPerfectNumber(-1));  // false
 
-
+        numberToWords(123);    // One Two Three
+        numberToWords(1010);   // One Zero One Zero
+        numberToWords(-12);    // Invalid Value
     }
 
     // 1. Palindrom Sayı Kontrolü
@@ -45,5 +47,71 @@ public class Main {
 
 
 
+    // 3. Sayıları Kelimelere Dökme
+    public static String numberToWords(int number) {
+        if (number < 0) {
+            return "Invalid Value";
+        }
+
+        if (number == 0) {
+            return "Zero";
+        }
+
+        StringBuilder result = new StringBuilder();
+        int reversed = reverse(number);
+        int originalDigitCount = getDigitCount(number);
+        int reversedDigitCount = getDigitCount(reversed);
+
+        while (reversed > 0) {
+            int digit = reversed % 10;
+            result.append(getWordForDigit(digit)).append(" ");
+            reversed /= 10;
+        }
+
+        // Eksik sıfırlar varsa onları da ekle
+        for (int i = 0; i < originalDigitCount - reversedDigitCount; i++) {
+            result.append("Zero ");
+        }
+
+        return result.toString().trim(); // En sondaki boşluğu sil
+    }
+
+    // Sayıyı ters çevir
+    public static int reverse(int number) {
+        int reversed = 0;
+        while (number != 0) {
+            reversed = reversed * 10 + number % 10;
+            number /= 10;
+        }
+        return reversed;
+    }
+
+    //  Rakam sayısı
+    public static int getDigitCount(int number) {
+        if (number == 0) return 1;
+        int count = 0;
+        while (number > 0) {
+            count++;
+            number /= 10;
+        }
+        return count;
+    }
+
+    //Rakamı kelimeye çevir
+    public static String getWordForDigit(int digit) {
+        return switch (digit) {
+            case 0 -> "Zero";
+            case 1 -> "One";
+            case 2 -> "Two";
+            case 3 -> "Three";
+            case 4 -> "Four";
+            case 5 -> "Five";
+            case 6 -> "Six";
+            case 7 -> "Seven";
+            case 8 -> "Eight";
+            case 9 -> "Nine";
+            default -> "";
+        };
+    }
 
 }
